@@ -1,0 +1,24 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MARIADB_DATABASE=test
+      MARIADB_PORT_NUMBER=3306
+      MARIADB_ROOT_USER=root
+      MARIADB_USER=monty
+      MARIADB_PASSWORD=monty
+      MARIADB_ROOT_PASSWORD: RAND123456
+    ports:
+      - 3306:3306
+    volumes:
+      - '/bitnami/mariadb/:/var/lib/mysql'
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 16080:8080
