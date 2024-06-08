@@ -9,10 +9,13 @@ vim /etc/letsencrypt/cloudflare.ini
 dns_cloudflare_email = 
 dns_cloudflare_api_key = global-token
 ```
+
 Configurando permissões do .ini
+
 `chmod 600 /etc/letsencrypt/cloudflare.ini`
 
 Executar criação do certificado via cloudflare
+
 `certbot certonly --dns-cloudflare --dns-cloudflare-credentials /etc/letsencrypt/cloudflare.ini -d pihole.9level.com.br`
 
 Saida esperada: 
