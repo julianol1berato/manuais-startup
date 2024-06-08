@@ -29,7 +29,7 @@ Saida esperada:
 ![image](https://github.com/julianol1berato/manuais-startup/assets/6303689/537f81cf-6bb9-4714-a08b-a88be9a867af)
 
 
-6.Configuração HTTPS - SSL:
+6. Configuração HTTPS - SSL:
 
 cat /etc/lighttpd/conf-enabled/10-ssl.conf
 ```
