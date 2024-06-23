@@ -1,10 +1,13 @@
 # Como instalar n8n rápido?
 
 Instalando docker
+
 `apt update && apt upgrade -y && apt install docker.io vim curl wget -y`
 
 Criar o volume persistente: 
+
 `docker volume create n8n_data`
+
 
 
 Executar com as váriaveis. A conexão com o postgresql serve para separar os arquivos de configuração do n8n onde contém usuários e senhas, pode rodar sem o postgresql em ambientes simples.
@@ -34,5 +37,7 @@ Não precisa usar flags abaixo, elas servem só para mudar o endpoint "prod"  e 
 
 
 Manual:
+
 https://docs.n8n.io/hosting/configuration/environment-variables/endpoints/
+
 https://docs.n8n.io/hosting/configuration/environment-variables/
