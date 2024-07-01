@@ -2,7 +2,7 @@
 
 
 ## No container especifico que desejar alterar coloque:
-**/etc/pve/lxc/<nnn>.conf**
+**/etc/pve/lxc/NNN.conf**
 
 ```
 lxc.cgroup.devices.allow: c 10:200 rwm
