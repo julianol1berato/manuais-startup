@@ -8,6 +8,7 @@
 
 
 ### regras de firewall s3 
+
 ```sh
 # Redireciona o tráfego para o endereço interno
 iptables -t nat -A PREROUTING -d XXXX.XX8 -p tcp --dport 9000 -j DNAT --to-destination 100.100.xxx.xxx:9000
@@ -22,7 +23,9 @@ iptables -t nat -A POSTROUTING -d 100.100.xxx.xxx -p tcp --dport 9000 -j MASQUER
 iptables -t nat -A POSTROUTING -d 100.100.xxx.xxx -p tcp --dport 9001 -j MASQUERADE
 ```
 
-```
+### Ativação S3 no Traefik proxy DNS
+
+```yml
 http:
   middlewares:
     redirect-to-https:
