@@ -2,8 +2,8 @@
 
 - [X] Ativação S3 via TailScale - ✅
 - [X] Ativação S3 no Traefik proxy DNS - ✅
-- [X] Regras de Firewall S3 - ✅
-- [ ] 
+- [X] Regras de Firewall S3 - ✅ 
+- [X] fix sshd - session small - ✅
 - [ ] 
 
 
