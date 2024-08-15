@@ -1,0 +1,48 @@
+# Base URL for the ntfy server (e.g., https://ntfy.yourdomain.com)
+base-url: "https://ntfy.9level.com.br"
+
+# Enable or disable user login
+enable-login: true
+
+# Enable or disable reservations
+enable-reservations: true
+
+# File path for the message cache
+cache-file: "/var/cache/ntfy/cache.db"
+
+# Duration for which messages are stored in the cache
+cache-duration: "12h"
+
+# File path for the authentication database
+auth-file: "/etc/ntfy/auth.db"
+
+# Default access control setting
+auth-default-access: "deny-all"
+
+# File path for the web push database
+web-push-file: "/var/cache/ntfy/webpush.db"
+
+# Email address used for web push notifications
+web-push-email-address: "ntfy@9level.com.br"
+
+# Indicates if the server is behind a proxy
+behind-proxy: true
+
+# SMTP server configuration for sending emails
+smtp-sender-addr: "smtp.sendgrid.net:587"
+smtp-sender-from: "juliano"
+smtp-sender-user: "apikey"
+smtp-sender-pass: "SG"
+smtp-server-domain: "9level.com.br"
+
+# Upstream configuration
+upstream-base-url: "https://ntfy.sh"
+upstream-access-token: "tk_"
+
+# Additional settings
+# attachment-cache-dir: "/var/cache/ntfy/attachments"
+# attachment-total-size-limit: "5G"
+# attachment-file-size-limit: "15M"
+# attachment-expiry-duration: "3h"
+# visitor-attachment-total-size-limit: "100M"
+# visitor-attachment-daily-bandwidth-limit: "500M"
