@@ -1,4 +1,4 @@
-| Atividades | Líder Técnico | Analista de Controle | Atendentes Central | Field Service |
+| Atividades | Líder Técnico | Administrativo Triagem | Atendentes Central | Field Service |
 |------------|---------------|---------------------|-------------------|---------------|
 | **Gestão de Ativos e Controle** |
 | Gestão de empréstimos de equipamentos | A | R | I | I |
