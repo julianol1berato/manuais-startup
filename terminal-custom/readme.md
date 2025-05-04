@@ -25,17 +25,12 @@ Um conjunto de configurações para o Bash que torna o terminal Linux mais amig�
    cp ~/.bashrc ~/.bashrc.backup
    ```
 
-2. Clone este repositório ou baixe o arquivo `.bashrc`:
+2. Baixe o arquivo .bashrc personalizado diretamente via curl:
    ```bash
-   git clone https://github.com/julianol1berato/terminal-custom
+   curl -o ~/.bashrc https://raw.githubusercontent.com/julianol1berato/manuais-startup/main/terminal-custom/.bashrc
    ```
 
-3. Copie o arquivo para seu diretório home:
-   ```bash
-   cp terminal-custom/.bashrc ~/.bashrc
-   ```
-
-4. Aplique as configurações:
+3. Aplique as configurações:
    ```bash
    source ~/.bashrc
    ```
@@ -48,7 +43,7 @@ A função `get_local_ip()` foi projetada para mostrar apenas o IP da sua interf
 
 ```bash
 # Abra o arquivo .bashrc:
-nano ~/.bashrc
+vim ~/.bashrc
 
 # Localize a função get_local_ip() e ajuste esses parâmetros:
 VALID_INTERFACES="eth|en|wlan|wl|eno|enp"  # Adicione seus padrões de interfaces válidas
@@ -74,7 +69,7 @@ Para adicionar mais aliases, você pode editar o arquivo `.bashrc` diretamente o
 
 ```bash
 # Criar ou editar .bash_aliases
-nano ~/.bash_aliases
+vim ~/.bash_aliases
 
 # Adicione seus aliases, por exemplo:
 alias update='sudo apt update && sudo apt upgrade -y'
