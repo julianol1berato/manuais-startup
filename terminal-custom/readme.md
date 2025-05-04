@@ -2,7 +2,7 @@
 
 Um conjunto de configurações para o Bash que torna o terminal Linux mais amigável e eficiente para administradores de sistemas e desenvolvedores, sem a necessidade de plugins complexos.
 
-![Exemplo do Terminal]([https://github.com/julianol1berato/manuais-startup/blob/main/terminal-custom/terminal1.png]))
+![Exemplo do Terminal](https://github.com/julianol1berato/manuais-startup/raw/main/terminal-custom/terminal1.png)
 
 ## 🚀 Funcionalidades
 
