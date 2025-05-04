@@ -101,36 +101,6 @@ node --version
 npm --version
 ```
 
-#### Arch Linux:
-```bash
-# Instalar Node.js
-sudo pacman -S nodejs npm
-
-# Verificar a instalação
-node --version
-npm --version
-```
-
-#### Docker/Alpine:
-```bash
-# Instalar Node.js
-apk add --update nodejs npm
-
-# Verificar a instalação
-node --version
-npm --version
-```
-
-#### macOS (usando Homebrew):
-```bash
-# Instalar Node.js
-brew install node
-
-# Verificar a instalação
-node --version
-npm --version
-```
-
 ### 3. Instalação do Gerenciador de Plugins
 
 Instale o vim-plug, um gerenciador de plugins leve e poderoso:
