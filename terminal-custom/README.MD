@@ -27,12 +27,12 @@ Um conjunto de configurações para o Bash que torna o terminal Linux mais amig�
 
 2. Clone este repositório ou baixe o arquivo `.bashrc`:
    ```bash
-   git clone https://github.com/seu-usuario/terminal-config
+   git clone https://github.com/julianol1berato/terminal-custom
    ```
 
 3. Copie o arquivo para seu diretório home:
    ```bash
-   cp terminal-config/.bashrc ~/.bashrc
+   cp terminal-custom/.bashrc ~/.bashrc
    ```
 
 4. Aplique as configurações:
