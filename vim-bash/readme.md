@@ -2,6 +2,8 @@
 
 Uma adaptação do tema Halcyon para o Vim, oferecendo uma experiência visual elegante com um esquema de cores azul escuro para desenvolvimento.
 
+![Exemplo do Vim](https://github.com/julianol1berato/manuais-startup/raw/main/vim-bash/vim1.png)
+
 ## Sobre o Tema
 
 Halcyon é um tema minimalista azul escuro, originalmente desenvolvido por [Brittany Chiang](https://github.com/bchiang7) para VSCode e outros editores. Esta adaptação traz a elegância e a funcionalidade desse tema para o Vim tradicional.
