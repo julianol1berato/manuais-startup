@@ -1,0 +1,78 @@
+#!/bin/bash
+# github - julianol1berato
+# Gerencia bans permanentes
+
+if [ "$1" = "list" ]; then
+    echo "=== IPv4 Permanent Bans ==="
+    iptables -L PERMANENT_BAN -n -v --line-numbers | grep DROP || echo "Nenhum IP banido"
+    echo ""
+    echo "=== IPv6 Permanent Bans ==="
+    ip6tables -L PERMANENT_BAN -n -v --line-numbers | grep DROP || echo "Nenhum IP banido"
+    exit 0
+fi
+
+IP=$1
+ACTION=${2:-add}
+
+if [ -z "$IP" ]; then
+    echo "Uso: permaban <IP> [add|remove|list]"
+    echo ""
+    echo "Exemplos:"
+    echo "  permaban 193.142.147.209        # Adiciona IP"
+    echo "  permaban 193.142.147.209 remove # Remove IP"
+    echo "  permaban list                   # Lista banidos"
+    exit 1
+fi
+
+case $ACTION in
+    add)
+        # Detecta IPv4 ou IPv6
+        if [[ $IP =~ : ]]; then
+            # IPv6
+            ip6tables -I PERMANENT_BAN 1 -s $IP -j DROP
+            ip6tables -I PERMANENT_BAN 1 -s $IP -m limit --limit 1/min -j LOG --log-prefix "PermaBan-v6: "
+        else
+            # IPv4
+            iptables -I PERMANENT_BAN 1 -s $IP -j DROP
+            iptables -I PERMANENT_BAN 1 -s $IP -m limit --limit 1/min -j LOG --log-prefix "PermaBan: "
+        fi
+
+        # Salva automaticamente
+        iptables-save > /etc/iptables/rules.v4
+        ip6tables-save > /etc/iptables/rules.v6
+
+        # Registra
+        echo "$(date): Banned $IP" >> /var/log/permaban.log
+        echo "✅ IP $IP banido permanentemente"
+        ;;
+
+    remove)
+        if [[ $IP =~ : ]]; then
+            ip6tables -D PERMANENT_BAN -s $IP -m limit --limit 1/min -j LOG --log-prefix "PermaBan-v6: " 2>/dev/null
+            ip6tables -D PERMANENT_BAN -s $IP -j DROP 2>/dev/null
+        else
+            iptables -D PERMANENT_BAN -s $IP -m limit --limit 1/min -j LOG --log-prefix "PermaBan: " 2>/dev/null
+            iptables -D PERMANENT_BAN -s $IP -j DROP 2>/dev/null
+        fi
+
+        iptables-save > /etc/iptables/rules.v4
+        ip6tables-save > /etc/iptables/rules.v6
+
+        echo "$(date): Unbanned $IP" >> /var/log/permaban.log
+        echo "✅ IP $IP removido"
+        ;;
+
+    list)
+        echo "=== IPv4 Permanent Bans ==="
+        iptables -L PERMANENT_BAN -n -v --line-numbers | grep DROP
+        echo ""
+        echo "=== IPv6 Permanent Bans ==="
+        ip6tables -L PERMANENT_BAN -n -v --line-numbers | grep DROP
+        ;;
+
+    *)
+        echo "❌ Ação inválida: $ACTION"
+        echo "Use: add, remove ou list"
+        exit 1
+        ;;
+esac  
