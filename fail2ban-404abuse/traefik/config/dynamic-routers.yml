@@ -1,0 +1,17 @@
+http:
+  routers:
+    catch-all:
+      rule: "HostRegexp(`{host:.+}`)"
+      priority: 1
+      middlewares:
+        - waf-chain@file
+      service: dummy-service
+      entryPoints:
+        - websecure
+      tls: {}
+
+  services:
+    dummy-service:
+      loadBalancer:
+        servers:
+          - url: "http://127.0.0.1:9999"
