@@ -93,8 +93,8 @@ docker stack deploy -c stack.yml ban-checker
 ### 5. Configurar Traefik
 ```bash
 # Copiar configs
-cp traefik/config/dynamic-routers.yml /home/julianoliberato/docker/traefik/
-cp traefik/config/middlewares.yml /home/julianoliberato/docker/traefik/
+cp traefik/config/dynamic-routers.yml /home/julianoliberato/docker/traefik/config/
+cp traefik/config/middlewares.yml /home/julianoliberato/docker/traefik/config/
 
 # Editar traefik.yml
 vim /home/julianoliberato/docker/traefik/traefik.yml
@@ -103,17 +103,20 @@ vim /home/julianoliberato/docker/traefik/traefik.yml
 Adicionar:
 ```yaml
 providers:
+  swarm:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+    network: proxy
   file:
-    filenames:
-      - /middlewares.yml
-      - /dynamic-routers.yml
+    directory: /config
     watch: true
 ```
 
 Adicionar mount no stack:
 ```yaml
 volumes:
-  - /home/julianoliberato/docker/traefik/dynamic-routers.yml:/dynamic-routers.yml:ro
+  - /home/julianoliberato/docker/traefik/config:/config:ro
+
 ```
 
 Atualizar:
