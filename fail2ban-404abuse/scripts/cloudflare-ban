@@ -1,0 +1,97 @@
+#!/bin/bash
+
+CF_API_TOKEN="xxxxx-xxxxxx"
+CF_ACCOUNT_ID="xxxxxxxxxx"
+
+
+ACTION="$1"
+IP="$2"
+
+# Validar credenciais
+if [ -z "$CF_API_TOKEN" ] || [ -z "$CF_ACCOUNT_ID" ]; then
+    echo "❌ Configure CF_API_TOKEN e CF_ACCOUNT_ID no script"
+    exit 1
+fi
+
+# Testar credenciais
+test_auth() {
+    RESPONSE=$(curl -s "https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}" \
+        -H "Authorization: Bearer ${CF_API_TOKEN}")
+
+    SUCCESS=$(echo "$RESPONSE" | jq -r '.success')
+    if [ "$SUCCESS" != "true" ]; then
+        echo "❌ Erro de autenticação:"
+        echo "$RESPONSE" | jq -r '.errors[0].message'
+        exit 1
+    fi
+    echo "✅ Credenciais OK"
+}
+
+case "$ACTION" in
+    test)
+        test_auth
+        ;;
+
+    list)
+        echo "📋 IPs bloqueados na Cloudflare:"
+        curl -s "https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/firewall/access_rules/rules?mode=block&per_page=100" \
+            -H "Authorization: Bearer ${CF_API_TOKEN}" | \
+            jq -r '.result[]? | "\(.configuration.value) - \(.notes // "sem nota")"'
+        ;;
+
+    add)
+        if [ -z "$IP" ]; then
+            echo "❌ Uso: $0 add <IP>"
+            exit 1
+        fi
+
+        # Bloquear IP
+        RESPONSE=$(curl -s -X POST "https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/firewall/access_rules/rules" \
+            -H "Authorization: Bearer ${CF_API_TOKEN}" \
+            -H "Content-Type: application/json" \
+            --data '{
+                "mode": "block",
+                "configuration": {
+                    "target": "ip",
+                    "value": "'"${IP}"'"
+                },
+                "notes": "Banned by fail2ban - '"$(date +%Y-%m-%d\ %H:%M:%S)"'"
+            }')
+
+        SUCCESS=$(echo "$RESPONSE" | jq -r '.success')
+        if [ "$SUCCESS" = "true" ]; then
+            echo "✅ IP $IP bloqueado na Cloudflare"
+        else
+            echo "❌ Erro ao bloquear $IP:"
+            echo "$RESPONSE" | jq -r '.errors[0].message'
+        fi
+        ;;
+
+    remove)
+        if [ -z "$IP" ]; then
+            echo "❌ Uso: $0 remove <IP>"
+            exit 1
+        fi
+
+        # Buscar rule ID
+        RULE_ID=$(curl -s "https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/firewall/access_rules/rules?configuration.value=${IP}" \
+            -H "Authorization: Bearer ${CF_API_TOKEN}" | jq -r '.result[0].id')
+
+        if [ "$RULE_ID" != "null" ] && [ -n "$RULE_ID" ]; then
+            curl -s -X DELETE "https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/firewall/access_rules/rules/${RULE_ID}" \
+                -H "Authorization: Bearer ${CF_API_TOKEN}" > /dev/null
+            echo "✅ IP $IP desbloqueado na Cloudflare"
+        else
+            echo "⚠️  IP $IP não encontrado na Cloudflare"
+        fi
+        ;;
+
+    *)
+        echo "Uso:"
+        echo "  $0 test              # Testar credenciais"
+        echo "  $0 list              # Listar IPs bloqueados"
+        echo "  $0 add <IP>          # Bloquear IP"
+        echo "  $0 remove <IP>       # Desbloquear IP"
+        exit 1
+        ;;
+esac
