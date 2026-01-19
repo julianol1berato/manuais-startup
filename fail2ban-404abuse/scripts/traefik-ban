@@ -1,0 +1,37 @@
+#!/bin/bash
+# github - julianol1berato
+# Script unificado: bane no Traefik ban-checker e na Cloudflare
+
+BANNED_FILE="/home/julianoliberato/docker/ban-checker/banned-ips.txt"
+IP="$1"
+ACTION="$2"
+
+case "$ACTION" in
+    add)
+        # adicionar no arquivo do ban-checker
+        if ! grep -q "^${IP}$" "$BANNED_FILE" 2>/dev/null; then
+            echo "$IP" >> "$BANNED_FILE"
+            echo "✅ Traefik: IP $IP adicionado"
+        fi
+
+        /usr/local/bin/cloudflare-ban add "$IP" 2>&1 | logger -t traefik-ban
+        /usr/local/bin/permaban "$IP" add 2>&1 | logger -t traefik-ban
+        ;;
+
+    remove)
+        # Remover do arquivo
+        sed -i "/^${IP}$/d" "$BANNED_FILE" 2>/dev/null
+        echo "✅ Traefik: IP $IP removido"
+
+        # Remover da Cloudflare
+        /usr/local/bin/cloudflare-ban remove "$IP" 2>&1 | logger -t traefik-ban
+
+        # Remover do iptables
+        /usr/local/bin/permaban "$IP" remove 2>&1 | logger -t traefik-ban
+        ;;
+
+    *)
+        echo "Uso: $0 <IP> <add|remove>"
+        exit 1
+        ;;
+esac
